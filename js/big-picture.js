@@ -2,19 +2,23 @@ import {isEscapeKey} from './util.js';
 import {removeComments, renderComments} from './comments.js';
 
 const body = document.body;
-const picrureModal = document.querySelector('.big-picture');
-const picrureModalClose = picrureModal.querySelector('.big-picture__cancel');
+const pictureModal = document.querySelector('.big-picture');
+const pictureModalCloseBtn = pictureModal.querySelector('.big-picture__cancel');
 
-const renderModal = ({url, likes, comments, description}) => {
-  const image = picrureModal.querySelector('.big-picture__img img');
+const renderPictureModal = ({url, likes, comments, description}) => {
+  const image = pictureModal.querySelector('.big-picture__img img');
   image.src = url;
   image.alt = description;
 
-  picrureModal.querySelector('.likes-count').textContent = likes;
-  picrureModal.querySelector('.social__caption').textContent = description;
-  picrureModal.querySelector('.social__comment-total-count').textContent = comments.length;
+  pictureModal.querySelector('.likes-count').textContent = likes;
+  pictureModal.querySelector('.social__caption').textContent = description;
+  pictureModal.querySelector('.social__comment-total-count').textContent = comments.length;
 
   renderComments(comments);
+};
+
+const onPictureModalCloseBtnClick = () => {
+  closePictureModal();
 };
 
 function onDocumentKeydown(evt) {
@@ -24,24 +28,21 @@ function onDocumentKeydown(evt) {
   }
 }
 
-function closeModal () {
+function closePictureModal () {
   removeComments();
-  picrureModal.classList.add('hidden');
+  pictureModal.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
-function openModal (photo) {
-  picrureModal.classList.remove('hidden');
+function openPictureModal (photo) {
+  pictureModal.classList.remove('hidden');
   body.classList.add('modal-open');
 
-  renderModal(photo);
+  renderPictureModal(photo);
+  pictureModalCloseBtn.addEventListener('click', onPictureModalCloseBtnClick);
 
   document.addEventListener('keydown', onDocumentKeydown);
 }
 
-picrureModalClose.addEventListener('click', () => {
-  closeModal ();
-});
-
-export {openModal};
+export {openPictureModal};
