@@ -24,7 +24,7 @@ const onPictureModalCloseBtnClick = () => {
 function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeModal();
+    closePictureModal();
   }
 }
 
